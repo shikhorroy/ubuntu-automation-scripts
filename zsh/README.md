@@ -53,7 +53,13 @@ shell switching and full cleanup on Ubuntu 24.04 (and similar Debian-based syste
 
 ---
 
-## Notes
+**First-time Zsh preferences:**
+
+The very first time you launch `zsh`, you may see a Zsh configuration wizard ("Z Shell configuration function for new
+users"). You can use it to set preferences interactively. If you use this script, `.zshrc` is auto-generated, so the
+wizard will be skipped next time unless you delete your `.zshrc` file.
+You can always rerun the wizard anytime by removing your `.zshrc` and starting `zsh`
+again.
 
 * **Font:**
   After installation, set your terminal font to `MesloLGS NF` (Terminal → Preferences → Text → Custom Font).
