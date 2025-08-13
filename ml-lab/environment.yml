@@ -1,0 +1,8 @@
+name: mlenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - jupyter
+  - ipykernel
+  - numpy

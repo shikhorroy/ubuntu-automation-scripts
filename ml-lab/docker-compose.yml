@@ -1,0 +1,37 @@
+services:
+  ml-lab:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION}
+    image: ml-lab:latest
+    container_name: ml-lab
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/workspace
+      - ./environment.yml:/tmp/environment.yml
+      - conda_env:/opt/conda/envs/mlenv
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:-ml1234}
+      - PYTHONUNBUFFERED=1
+    command:
+      - bash
+      - -c
+      - |
+        # Check if environment.yml has been updated since last container run
+        if [ /tmp/environment.yml -nt /opt/conda/envs/mlenv/.last_update ]; then
+          echo "Detected environment.yml changes. Updating conda environment..."
+          conda env update -n mlenv -f /tmp/environment.yml --prune --verbose
+          echo "Environment update completed!"
+          touch /opt/conda/envs/mlenv/.last_update
+        else
+          echo "Environment is up to date. Starting Jupyter Lab..."
+        fi
+        conda run -n mlenv --no-capture-output jupyter lab --allow-root --ip=0.0.0.0 --port=8888 --no-browser --ServerApp.token=${JUPYTER_TOKEN} --ServerApp.password= --ServerApp.root_dir=/workspace --ServerApp.preferred_dir=/workspace
+    shm_size: "2g"
+    restart: unless-stopped
+
+volumes:
+  conda_env:
