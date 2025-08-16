@@ -66,13 +66,13 @@ fi
 # Determine build strategy
 if [ "$REBUILD_ALL" = true ]; then
     echo "🔄 Rebuilding everything from scratch..."
-    docker-compose build --no-cache --build-arg PYTHON_VERSION=${PYTHON_VERSION}
+    docker compose build --no-cache --build-arg PYTHON_VERSION=${PYTHON_VERSION}
 elif [ "$FORCE_REBUILD" = true ] || [ "$ENV_CHANGED" = true ]; then
     echo "🔨 Building with updated dependencies..."
-    docker-compose build --build-arg PYTHON_VERSION=${PYTHON_VERSION}
+    docker compose build --build-arg PYTHON_VERSION=${PYTHON_VERSION}
 else
     echo "✅ No changes detected. Using cached build..."
-    docker-compose build --build-arg PYTHON_VERSION=${PYTHON_VERSION}
+    docker compose build --build-arg PYTHON_VERSION=${PYTHON_VERSION}
 fi
 
 # Save current environment hash
@@ -82,7 +82,7 @@ fi
 
 echo ""
 echo "🚀 Starting ML Lab container..."
-docker-compose up -d
+docker compose up -d
 
 echo ""
 echo "✅ ML Lab is ready!"
@@ -90,6 +90,6 @@ echo "📊 Jupyter Lab: http://localhost:8888"
 echo "🔑 Token: ${JUPYTER_TOKEN:-ml1234}"
 echo ""
 echo "📋 Useful commands:"
-echo "  docker-compose logs -f ml-lab    # View logs"
-echo "  docker-compose exec ml-lab bash  # Access container shell"
-echo "  docker-compose down              # Stop container"
+echo "  docker compose logs -f ml-lab    # View logs"
+echo "  docker compose exec ml-lab bash  # Access container shell"
+echo "  docker compose down              # Stop container"
